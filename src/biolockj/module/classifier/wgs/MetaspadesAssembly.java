@@ -39,7 +39,7 @@ public class MetaspadesAssembly extends ClassifierModuleImpl {
 		final List<List<String>> data = new ArrayList<>();
 		for( final File file: files ) {
 			final String fileId = SeqUtil.getSampleId( file.getName() );
-			final String outputFile = getOutputDir().getAbsolutePath() + File.separator + fileId +"_assembly."+ Constants.FASTA;
+			final String outputFile = getOutputDir().getAbsolutePath() + File.separator + fileId +"_assembly";
 			final ArrayList<String> lines = new ArrayList<>();
 			lines.add(FUNCTION_METASPADES + " " + file.getAbsolutePath() + " " + outputFile );
 			data.add( lines );
@@ -61,7 +61,7 @@ public class MetaspadesAssembly extends ClassifierModuleImpl {
 		final Map<File, File> map = SeqUtil.getPairedReads( files );
 		for( final File file: map.keySet() ) {
 			final String fileId = SeqUtil.getSampleId( file.getName() );
-			final String outputFile = getOutputDir().getAbsolutePath() + File.separator + fileId +"_assembly."+ Constants.FASTA;
+			final String outputFile = getOutputDir().getAbsolutePath() + File.separator + fileId +"_assembly";
 			final ArrayList<String> lines = new ArrayList<>();
 			lines.add( FUNCTION_METASPADES + " " + file.getAbsolutePath() + " " + map.get( file ).getAbsolutePath()
 				+ " " + outputFile );
