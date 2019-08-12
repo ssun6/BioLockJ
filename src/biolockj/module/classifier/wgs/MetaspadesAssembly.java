@@ -81,9 +81,10 @@ public class MetaspadesAssembly extends ClassifierModuleImpl {
 
 	/**
 	 * Metaspades runs python scripts, so no special command is required
+	 * @throws ConfigViolationException 
 	 */
 	@Override
-	public String getClassifierExe() throws Exception {
+	public String getClassifierExe() throws ConfigViolationException {
 		return Config.getExe( this, EXE_METASPADES );
 	}
 
@@ -91,7 +92,7 @@ public class MetaspadesAssembly extends ClassifierModuleImpl {
 	 * Obtain the metaspades runtime params
 	 */
 	@Override
-	public List<String> getClassifierParams() throws Exception {
+	public List<String> getClassifierParams() {
 		final List<String> params = Config.getList( this, EXE_METASPADES_PARAMS );
 		return params;
 	}
