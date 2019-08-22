@@ -20,30 +20,24 @@ import biolockj.module.SeqModuleImpl;
 import biolockj.util.*;
 
 /**
- * This BioModule builds the bash scripts used to execute metaspades.py to assemble WGS sequences with MetaSPAdes.
- * 
- * @blj.web_desc MetaSPAdes Classifier
+ * This BioModule builds the bash scripts used to assemble WGS sequences with MetaSPAdes, 
+ * bin contigs with Metabat2 and check quality with checkM.
+ * @blj.web_desc
  */
 public class GenomeAssembly extends SeqModuleImpl {
 	/**
-	 * Build bash script lines to assemble paired WGS reads with MetaSPAdes. The inner list contains 1 bash script line
-	 * per sample.
+	 * Build bash script lines to assemble paired WGS reads per sample.
 	 * <p>
 	 * Example line:<br>
-	 * python /app/metaspades.py -t 10 -m 150 -s single_end.fasta --tmp-dir ./temp/ -o ./output/
+	 * metaspades.py -t 2 -m 150 -1 $1 -2 $2 --tmp-dir ${pipeDir}/02_GenomeAssembly/temp -o $3/assembly
+     * metabat2 -v -m 2000  -i $3/assembly/contigs.fasta -o $3/bins/bin
+     * checkm lineage_wf -f $3/CheckM.txt -x fa -t 2 $3/bins/ $3/SCG
 	 */
 	@Override
 	public List<List<String>> buildScript( final List<File> files ) throws Exception {
 		return null;
 	}
 
-	/**
-	 * Build bash script lines to assemble paired WGS reads with MetaSPAdes. 
-	 * per sample.
-	 * <p>
-	 * Example line:<br>
-	 * python /app/metaspades.py -t 10 -m 150 -1 R1.fasta -2 R2.fasta --tmp-dir ./temp/ -o ./output/
-	 */
 	@Override
 	public List<List<String>> buildScriptForPairedReads( final List<File> files ) throws Exception {
 		final List<List<String>> data = new ArrayList<>();
@@ -61,19 +55,17 @@ public class GenomeAssembly extends SeqModuleImpl {
 	}
 
 	/**
-	 * Verify none of the derived command line parameters are included in
-	 * {@link biolockj.Config}.{@value #EXE_METASPADES}{@value biolockj.Constants#PARAMS}
+	 * make sure the samples are paired reads, metaspades currently doesn't support single reads.
 	 */
 	@Override
 	public void checkDependencies() throws Exception {
 		if (!Config.getBoolean( this, Constants.INTERNAL_PAIRED_READS )) {
 			System.err.println("Metaspades doesn't support single reads.");
-		}
-		
+		}		
 	}
 
 	/**
-	 * Metaspades runs python scripts, so no special command is required
+	 * No special command is required
 	 * @throws ConfigViolationException 
 	 */
 	public String getMetaspadesExe() throws ConfigViolationException {
@@ -87,7 +79,7 @@ public class GenomeAssembly extends SeqModuleImpl {
 	}
 
 	/**
-	 * Obtain the metaspades runtime params
+	 * Obtain the runtime params
 	 */
 	public List<String> getClassifierParams() {
 		final List<String> params = Config.getList( this, EXE_METASPADES_PARAMS );
@@ -99,12 +91,13 @@ public class GenomeAssembly extends SeqModuleImpl {
 	 */
 	@Override
 	public List<String> getWorkerScriptFunctions() throws Exception {
-		final List<String> lines = super.getWorkerScriptFunctions();
-		lines.add( "function " + FUNCTION_ASSEMBLY + "() {" );
+		final List<String> lines = super.getWorkerScriptFunctions();		
 		if (Config.getBoolean( this, Constants.INTERNAL_PAIRED_READS )) {
+			lines.add( "function " + FUNCTION_ASSEMBLY + "() {" );
 			lines.add(getMetaspadesExe() + " -t " + Config.getNonNegativeInteger(this, "script.numThreads") + " -m " + getMemory() + " -1 $1 -2 $2 --tmp-dir " + getTempDir().getAbsolutePath() + " -o $3/assembly" );
 			lines.add(getMetabatExe() + " -v -m 2000  -i $3/assembly/contigs.fasta -o $3/bins/bin");
 			lines.add(getCheckmExe() + " lineage_wf -f $3/CheckM.txt -x fa -t "+ Config.getNonNegativeInteger(this, "script.numThreads")+ " $3/bins/ $3/SCG ");
+			lines.add( "}" + RETURN );
 		}else {
 			System.err.println("Metaspades doesn't support single reads.");
 	    }
