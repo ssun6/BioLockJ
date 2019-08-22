@@ -25,7 +25,7 @@ import biolockj.util.MemoryUtil;
  * 
  * @blj.web_desc Kraken2 Parser
  */
-public class GenomeAssemblyParser extends ParserModuleImpl {
+public class GenomeassemblyParser extends ParserModuleImpl {
 	/**
 	 * Parse all {@link biolockj.module.classifier.wgs.Kraken2Classifier} reports in the input directory.<br>
 	 * Build an {@link biolockj.node.wgs.Kraken2Node} for each line.<br>

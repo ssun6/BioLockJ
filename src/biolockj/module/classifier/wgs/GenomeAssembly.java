@@ -103,7 +103,7 @@ public class GenomeAssembly extends ClassifierModuleImpl {
 		if (Config.getBoolean( this, Constants.INTERNAL_PAIRED_READS )) {
 			lines.add(getClassifier1Exe() + " -t " + Config.getNonNegativeInteger(this, "script.numThreads") + " -m " + getMemory() + " -1 $1 -2 $2 --tmp-dir " + getTempDir().getAbsolutePath() + " -o $3/assembly" );
 			lines.add(getClassifier2Exe() + " -v -m 2000  -i $3/assembly/contigs.fasta -o $3/bins/bin");
-			lines.add(getClassifier3Exe() + " lineage_wf -f $3/CheckM.txt -x fa -t "+ Config.getNonNegativeInteger(this, "script.numThreads")+ " s3/bins/ $3/SCG ");
+			lines.add(getClassifier3Exe() + " lineage_wf -f $3/CheckM.txt -x fa -t "+ Config.getNonNegativeInteger(this, "script.numThreads")+ " $3/bins/ $3/SCG ");
 		}else {
 			lines.add(getClassifierExe() + " -t " + Config.getNonNegativeInteger(this, "script.numThreads") + " s3/bins/ $3/SCG " + getMemory() + " -s $1 --tmp-dir " + getTempDir().getAbsolutePath() + " -o $2" );
 		}		
