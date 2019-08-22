@@ -125,7 +125,7 @@ public class GenomeAssembly extends ClassifierModuleImpl {
 	/**
 	 * {@link biolockj.Config} exe property used to obtain the metaphlan2 executable
 	 */
-	protected static final String EXE_METASPADES = "exe.metaspades";
+	protected static final String EXE_METASPADES = "exe.metaspades.py";
 	protected static final String EXE_METABAT2 = "exe.metabat2";
 	protected static final String EXE_CHECKM = "exe.checkm";
 
