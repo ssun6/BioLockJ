@@ -24,7 +24,7 @@ RUN cd /usr/local/bin && \
 ARG BLJ_DATE
 ARG VER
 RUN echo "${BLJ_DATE}" && cd "${BLJ}" && \
-	wget -qO- "https://github.com/msioda/BioLockJ/releases/download/${VER}/biolockj_${VER}.tgz" | bsdtar -xzf- && \
+	wget -qO- "https://github.com/ssun6/BioLockJ/releases/download/${VER}/biolockj_${VER}.tgz" | bsdtar -xzf- && \
 	rm -rf ${BLJ}/[bil]* && rm -rf ${BLJ}/resources/[bdil]* && cd "${BLJ}/web_app" && npm install --only=production
 
 #5.) Cleanup

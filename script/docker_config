@@ -11,7 +11,7 @@
 #########################################################################
 export DOCKER_CLONE_SCRIPT="${HOME}/runDockerClone.sh"
 export DOCKER_DIR="${BLJ}/resources/docker"
-export DOCKER_ID="biolockj"
+export DOCKER_ID="shansun1809"
 export DOCK_SOCK="/var/run/docker.sock"
 export DOCKER_VER="docker-18.09.2"
 
